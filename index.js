@@ -56,6 +56,7 @@ async function handleClickEditButton(bookId) {
     // Ambil data buku dari server berdasarkan id, simpan hasilnya ke variabel currentBook
     const response = await fetch(`http://localhost:3333/books/${bookId}`);
     currentBook = await response.json();
+    console.log(bookId);
 
     // Berubah ke halaman mode edit
     currentPage = 'edit';
@@ -156,17 +157,18 @@ function generateRows(books) {
   } else {
       // looping books, untuk setiap book, buat row seperti ini:
       books.forEach(book => {
+        console.log(book.id);
         rows += `
-      <tr class="book-item">
-        <td class="px-6 py-4 border-b">${book.title}</td>
-        <td class="px-6 py-4 border-b">${book.author}</td>
-        <td class="px-6 py-4 border-b">${book.year}</td>
-        <td class="px-6 py-4 border-b">${book.quantity}</td>
-        <td class="px-6 py-4 border-b text-center">
-          <button class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="handleClickEditButton(${book.id})">Edit</button>
-          <button class="inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="handleClickDeleteButton(${book.id})">Hapus</button>  
-        </td>
-      </tr>`
+        <tr class="book-item">
+          <td class="px-6 py-4 border-b">${book.title}</td>
+          <td class="px-6 py-4 border-b">${book.author}</td>
+          <td class="px-6 py-4 border-b">${book.year}</td>
+          <td class="px-6 py-4 border-b">${book.quantity}</td>
+          <td class="px-6 py-4 border-b text-center">
+            <button class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="handleClickEditButton(${book.id})">Edit</button>
+            <button class="inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="handleClickDeleteButton(${book.id})">Hapus</button>  
+          </td>
+        </tr>`
       });
     /*
       Jangan lupa untuk ganti BookId dengan id dari book yang sedang di looping
@@ -241,7 +243,7 @@ async function fetchBooks() {
     */
     const response = await fetch('http://localhost:3333/books');
     books = await response.json();
-
+  
   } catch (error) {
     console.log(error);
     console.log('Terjadi kesalahan saat mengambil data buku');
@@ -254,6 +256,12 @@ async function addBook(book) {
       tambahkan buku baru ke http://localhost:3333/books dengan method POST
       body yang dikirim adalah book yang dikirimkan sebagai parameter function
     */
+  //  fetchBooks();
+  //  const lastId = books.length > 0 ? books[books.length - 1].id : 0;
+  //  book.id = lastId + 1;
+
+    const randomId = Math.floor(Math.random() * (9999 - 16 + 1)) + 10;
+    book.id = randomId;
 
     const response = await fetch('http://localhost:3333/books', {
       method: 'POST',
@@ -261,7 +269,7 @@ async function addBook(book) {
       body: JSON.stringify(book)
     });
     return await response.json();
-
+    
   } catch (error) {
     console.log(error);
     console.log('Terjadi kesalahan saat menambah buku');
@@ -293,7 +301,6 @@ async function deleteBook(bookId) {
       hapus buku yang ada di http://localhost:3333/books/:id dengan method DELETE
       id buku yang akan dihapus dikirimkan sebagai parameter function
     */
-    
     const response = await fetch(`http://localhost:3333/books/${bookId}`, {
       method: 'DELETE',  
     });
