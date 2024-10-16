@@ -70,10 +70,10 @@ async function handleClickEditButton(bookId) {
 
 async function handleClickDeleteButton(bookId) {
   try {
-    const confirmation = confirm('Apakah anda yakin ingin menghapus buku ini?');
-    if (!confirmation) {
-      return;
-    }
+    // const confirmation = confirm('Apakah anda yakin ingin menghapus buku ini?');
+    // if (!confirmation) {
+    //   return;
+    // }
 
     //panggil function deleteBook dengan parameter bookId
     await deleteBook(bookId);
@@ -256,9 +256,6 @@ async function addBook(book) {
       tambahkan buku baru ke http://localhost:3333/books dengan method POST
       body yang dikirim adalah book yang dikirimkan sebagai parameter function
     */
-  //  fetchBooks();
-  //  const lastId = books.length > 0 ? books[books.length - 1].id : 0;
-  //  book.id = lastId + 1;
 
     const randomId = Math.floor(Math.random() * (9999 - 16 + 1)) + 10;
     book.id = randomId;
